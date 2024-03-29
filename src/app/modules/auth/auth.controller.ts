@@ -4,17 +4,17 @@ import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
 import catchAsync from "../../shared/catchAsync";
 
-const createUser = catchAsync(async (req: Request, res: Response) => {
-  const result = await AuthServices.createUserIntoDb(req);
+const loginUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await AuthServices.loginUser(req.body);
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "User Created successfuly!",
+    message: "User logged in successfully",
     data: result,
   });
 });
 
 export const AuthControllers = {
-  createUser,
+  loginUser,
 };

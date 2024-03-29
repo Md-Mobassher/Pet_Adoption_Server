@@ -11,6 +11,7 @@ export default {
 
   jwt: {
     jwt_secret: process.env.JWT_SECRET,
+    expires_in: process.env.JWT_EXPIRES_IN,
   },
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
 };
