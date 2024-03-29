@@ -17,7 +17,6 @@ const loginUser = async (payload: { email: string; password: string }) => {
     payload.password,
     userData.password
   );
-  console.log(isCorrectPassword);
 
   if (!isCorrectPassword) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Password incorrect!");
