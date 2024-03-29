@@ -4,9 +4,11 @@ import router from "./app/routes";
 
 const app: Application = express();
 
-// parsers
-app.use(express.json());
 app.use(cors());
+
+//parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // application routes
 app.use("/api", router);
