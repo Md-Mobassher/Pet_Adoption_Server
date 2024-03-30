@@ -70,7 +70,25 @@ const getFilteredPet = async (params: any, options: IPaginationOptions) => {
   };
 };
 
+const updateAPet = async (petId: string, data: Partial<Pet>): Promise<Pet> => {
+  await prisma.pet.findFirstOrThrow({
+    where: {
+      id: petId,
+    },
+  });
+
+  const result = await prisma.pet.update({
+    where: {
+      id: petId,
+    },
+    data,
+  });
+
+  return result;
+};
+
 export const PetServices = {
   createAPet,
   getFilteredPet,
+  updateAPet,
 };
