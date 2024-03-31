@@ -24,6 +24,52 @@ const createUserIntoDb = async (req: Request): Promise<Partial<User>> => {
   return result;
 };
 
+const getUserInfo = async (userId: string): Promise<Partial<User>> => {
+  const result = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  return result;
+};
+
+const updateUserInfo = async (
+  userId: string,
+  data: Partial<User>
+): Promise<Partial<User>> => {
+  await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+  });
+
+  const result = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  return result;
+};
+
 export const UserServices = {
   createUserIntoDb,
+  getUserInfo,
+  updateUserInfo,
 };
