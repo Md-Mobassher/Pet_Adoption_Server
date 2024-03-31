@@ -63,9 +63,11 @@ npm install
 ```
 
 3. Set up the PostgreSQL database:
+
    `# Create a new PostgreSQL database createdb pet_adoption_db`
-   `
+
 4. Set up environment variables:
+
    `# Create a .env file in the project root directory touch .env`
 
 - Inside the `.env` file, add the following environment variables:
