@@ -4,7 +4,7 @@ import httpStatus from "http-status";
 import catchAsync from "../../shared/catchAsync";
 import { PetServices } from "./pet.service";
 import pick from "../../shared/pick";
-import { petFilterableFields } from "./pet.constant";
+import { petFilterableFields, petSearchAbleFields } from "./pet.constant";
 import { jwtHelpers } from "../../helper/jwtHelpers";
 import config from "../../config";
 import { Secret } from "jsonwebtoken";

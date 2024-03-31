@@ -39,8 +39,7 @@ const getFilteredPet = async (params: any, options: IPaginationOptions) => {
     });
   }
 
-  const whereConditons: Prisma.PetWhereInput =
-    andCondions.length > 0 ? { AND: andCondions } : {};
+  const whereConditons: Prisma.PetWhereInput = { AND: andCondions };
 
   const result = await prisma.pet.findMany({
     where: whereConditons,

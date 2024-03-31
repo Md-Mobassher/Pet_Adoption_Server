@@ -11,4 +11,5 @@ export const petFilterableFields: string[] = [
   "age",
   "size",
   "location",
+  "searchTerm",
 ];
