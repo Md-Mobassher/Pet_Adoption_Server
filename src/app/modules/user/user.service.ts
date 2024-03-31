@@ -2,9 +2,13 @@ import * as bcrypt from "bcrypt";
 import { Request } from "express";
 import { User } from "@prisma/client";
 import prisma from "../../shared/prisma";
+import config from "../../config";
 
 const createUserIntoDb = async (req: Request): Promise<Partial<User>> => {
-  const hasedPassword: string = await bcrypt.hash(req.body.password, 12);
+  const hasedPassword: string = await bcrypt.hash(
+    req.body.password,
+    Number(config.bcrypt_salt_rounds)
+  );
 
   const result = await prisma.user.create({
     data: {
@@ -55,7 +59,10 @@ const updateUserInfo = async (
     where: {
       id: userId,
     },
-    data,
+    data: {
+      name: data.name,
+      email: data.email,
+    },
     select: {
       id: true,
       name: true,
