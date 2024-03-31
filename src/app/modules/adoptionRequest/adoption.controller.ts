@@ -6,10 +6,14 @@ import { AdoptionServices } from "./adoption.service";
 import { Secret } from "jsonwebtoken";
 import { jwtHelpers } from "../../helper/jwtHelpers";
 import config from "../../config";
+import ApiError from "../../errors/ApiError";
 
 const createAdoptionRequest = catchAsync(
   async (req: Request, res: Response) => {
     const token = req.headers.authorization as string;
+    if (!token) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
+    }
     const { id } = jwtHelpers.verifyToken(
       token,
       config.jwt.jwt_secret as Secret
@@ -28,6 +32,9 @@ const createAdoptionRequest = catchAsync(
 
 const getAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization as string;
+  if (!token) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
+  }
   const { id } = jwtHelpers.verifyToken(token, config.jwt.jwt_secret as Secret);
 
   const result = await AdoptionServices.getAdoptionRequest(id);
@@ -43,6 +50,9 @@ const getAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
 const updateAdoptionRequestStatus = catchAsync(
   async (req: Request, res: Response) => {
     const token = req.headers.authorization as string;
+    if (!token) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
+    }
     const { id } = jwtHelpers.verifyToken(
       token,
       config.jwt.jwt_secret as Secret

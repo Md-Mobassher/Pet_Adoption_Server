@@ -40,7 +40,11 @@ const getAdoptionRequest = async (
     },
   });
 
-  const result = await prisma.adoptionRequest.findMany({});
+  const result = await prisma.adoptionRequest.findMany({
+    where: {
+      userId: userId,
+    },
+  });
 
   return result;
 };
@@ -67,6 +71,7 @@ const updateAdoptionRequestStatus = async (
   const result = await prisma.adoptionRequest.update({
     where: {
       id: requestId,
+      userId: userId,
     },
     data,
   });
