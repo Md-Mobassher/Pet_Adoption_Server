@@ -1,4 +1,4 @@
-import { AdoptionRequest } from "@prisma/client";
+import { AdoptionRequest, adoptionStatus } from "@prisma/client";
 import prisma from "../../shared/prisma";
 
 const createAdoptionIntoDb = async (
@@ -31,6 +31,51 @@ const createAdoptionIntoDb = async (
   return result;
 };
 
+const getAdoptionRequest = async (
+  userId: string
+): Promise<AdoptionRequest[]> => {
+  await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+  });
+
+  const result = await prisma.adoptionRequest.findMany({});
+
+  return result;
+};
+
+const updateAdoptionRequestStatus = async (
+  userId: string,
+  requestId: string,
+  data: {
+    status: adoptionStatus;
+  }
+): Promise<AdoptionRequest> => {
+  await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+  });
+
+  await prisma.adoptionRequest.findUniqueOrThrow({
+    where: {
+      id: requestId,
+    },
+  });
+
+  const result = await prisma.adoptionRequest.update({
+    where: {
+      id: requestId,
+    },
+    data,
+  });
+
+  return result;
+};
+
 export const AdoptionServices = {
   createAdoptionIntoDb,
+  getAdoptionRequest,
+  updateAdoptionRequestStatus,
 };

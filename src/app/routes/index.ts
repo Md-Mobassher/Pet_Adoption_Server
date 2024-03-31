@@ -23,6 +23,10 @@ const moduleRoutes = [
     path: "/adoption-request",
     route: AdoptionRoutes,
   },
+  {
+    path: "/adoption-requests",
+    route: AdoptionRoutes,
+  },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));
