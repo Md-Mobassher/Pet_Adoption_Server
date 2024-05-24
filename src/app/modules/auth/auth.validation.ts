@@ -12,3 +12,9 @@ export const loginValidationSchema = z.object({
     required_error: "Password is required",
   }),
 });
+
+export const createUserValidationSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+});

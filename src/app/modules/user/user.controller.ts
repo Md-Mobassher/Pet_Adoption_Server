@@ -7,17 +7,6 @@ import { jwtHelpers } from "../../helper/jwtHelpers";
 import { Secret } from "jsonwebtoken";
 import config from "../../config";
 
-const createUser = catchAsync(async (req: Request, res: Response) => {
-  const result = await UserServices.createUserIntoDb(req);
-
-  sendResponse(res, {
-    success: true,
-    statusCode: httpStatus.CREATED,
-    message: "User Created successfuly!",
-    data: result,
-  });
-});
-
 const getUserInfo = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization as string;
   const { id } = jwtHelpers.verifyToken(token, config.jwt.jwt_secret as Secret);
@@ -47,7 +36,6 @@ const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const UserControllers = {
-  createUser,
   getUserInfo,
   updateUserInfo,
 };

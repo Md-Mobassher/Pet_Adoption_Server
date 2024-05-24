@@ -5,6 +5,8 @@ import { jwtHelpers } from "../../helper/jwtHelpers";
 import config from "../../config";
 import { Secret } from "jsonwebtoken";
 import ApiError from "../../errors/ApiError";
+import { Request } from "express";
+import { User } from "@prisma/client";
 
 const loginUser = async (payload: { email: string; password: string }) => {
   const userData = await prisma.user.findUniqueOrThrow({
@@ -26,6 +28,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
     {
       id: userData.id,
       email: userData.email,
+      role: userData.role,
     },
     config.jwt.jwt_secret as Secret,
     config.jwt.expires_in as string
@@ -35,11 +38,38 @@ const loginUser = async (payload: { email: string; password: string }) => {
     id: userData.id,
     name: userData.name,
     email: userData.email,
+    role: userData.role,
     token: accessToken,
   };
   return result;
 };
 
+const createUserIntoDb = async (req: Request): Promise<Partial<User>> => {
+  const hasedPassword: string = await bcrypt.hash(
+    req.body.password,
+    Number(config.bcrypt_salt_rounds)
+  );
+
+  const result = await prisma.user.create({
+    data: {
+      name: req.body.name,
+      email: req.body.email,
+      password: hasedPassword,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+  console.log(result);
+  return result;
+};
+
 export const AuthServices = {
   loginUser,
+  createUserIntoDb,
 };
