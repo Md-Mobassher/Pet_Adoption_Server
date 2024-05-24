@@ -24,6 +24,7 @@ CREATE TABLE "pets" (
     "species" TEXT NOT NULL,
     "breed" TEXT NOT NULL,
     "age" INTEGER NOT NULL,
+    "image" TEXT NOT NULL,
     "size" TEXT NOT NULL,
     "location" TEXT NOT NULL,
     "description" TEXT NOT NULL,

@@ -16,4 +16,10 @@ export default {
     refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
   },
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
+
+  cloudinary: {
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
+  },
 };

@@ -11,16 +11,7 @@ import { Secret } from "jsonwebtoken";
 import ApiError from "../../errors/ApiError";
 
 const createAPet = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization as string;
-  if (!token) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
-  }
-  const { id } = jwtHelpers.verifyToken(
-    token,
-    config.jwt.access_secret as Secret
-  );
-
-  const result = await PetServices.createAPet(req.body);
+  const result = await PetServices.createAPet(req);
 
   sendResponse(res, {
     success: true,
