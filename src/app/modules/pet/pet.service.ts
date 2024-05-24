@@ -1,4 +1,4 @@
-import { Pet, Prisma } from "@prisma/client";
+import { Pet, Prisma, UserRole } from "@prisma/client";
 import prisma from "../../shared/prisma";
 import { paginationHelper } from "../../helper/paginationHelper";
 import { petSearchAbleFields } from "./pet.constant";
@@ -69,6 +69,16 @@ const getFilteredPet = async (params: any, options: IPaginationOptions) => {
   };
 };
 
+const getAPet = async (petId: string) => {
+  const result = await prisma.pet.findUniqueOrThrow({
+    where: {
+      id: petId,
+    },
+  });
+
+  return result;
+};
+
 const updateAPet = async (petId: string, data: Partial<Pet>): Promise<Pet> => {
   await prisma.pet.findFirstOrThrow({
     where: {
@@ -89,5 +99,6 @@ const updateAPet = async (petId: string, data: Partial<Pet>): Promise<Pet> => {
 export const PetServices = {
   createAPet,
   getFilteredPet,
+  getAPet,
   updateAPet,
 };

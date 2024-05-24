@@ -23,7 +23,7 @@ const updateUserInfo = async (
   userId: string,
   data: Partial<User>
 ): Promise<Partial<User>> => {
-  await prisma.user.findUniqueOrThrow({
+  const user = await prisma.user.findUniqueOrThrow({
     where: {
       id: userId,
     },
@@ -32,6 +32,7 @@ const updateUserInfo = async (
   const result = await prisma.user.update({
     where: {
       id: userId,
+      role: user.role,
     },
     data: {
       name: data.name,

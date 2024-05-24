@@ -3,15 +3,28 @@ import { AuthServices } from "./auth.service";
 import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
 import catchAsync from "../../shared/catchAsync";
+import config from "../../config";
+import { ILoginUserResponse } from "./auth.interface";
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.loginUser(req.body);
+  const { refreshToken } = result;
+  // set refresh token into cookie
+  const cookieOptions = {
+    secure: config.NODE_ENV === "development",
+    httpOnly: true,
+  };
 
-  sendResponse(res, {
+  res.cookie("refreshToken", refreshToken, cookieOptions);
+
+  sendResponse<ILoginUserResponse>(res, {
+    statusCode: 200,
     success: true,
-    statusCode: httpStatus.OK,
-    message: "User logged in successfully",
-    data: result,
+    message: "User logged in successfully !",
+    data: {
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
+    },
   });
 });
 

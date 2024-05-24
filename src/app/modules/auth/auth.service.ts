@@ -30,18 +30,24 @@ const loginUser = async (payload: { email: string; password: string }) => {
       email: userData.email,
       role: userData.role,
     },
-    config.jwt.jwt_secret as Secret,
-    config.jwt.expires_in as string
+    config.jwt.access_secret as Secret,
+    config.jwt.access_expires_in as string
   );
 
-  const result = {
-    id: userData.id,
-    name: userData.name,
-    email: userData.email,
-    role: userData.role,
-    token: accessToken,
+  const refreshToken = jwtHelpers.generateToken(
+    {
+      id: userData.id,
+      email: userData.email,
+      role: userData.role,
+    },
+    config.jwt.refresh_secret as Secret,
+    config.jwt.refresh_expires_in as string
+  );
+
+  return {
+    accessToken,
+    refreshToken,
   };
-  return result;
 };
 
 const createUserIntoDb = async (req: Request): Promise<Partial<User>> => {
@@ -65,7 +71,6 @@ const createUserIntoDb = async (req: Request): Promise<Partial<User>> => {
       updatedAt: true,
     },
   });
-  console.log(result);
   return result;
 };
 

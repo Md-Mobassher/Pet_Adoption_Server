@@ -9,7 +9,10 @@ import config from "../../config";
 
 const getUserInfo = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization as string;
-  const { id } = jwtHelpers.verifyToken(token, config.jwt.jwt_secret as Secret);
+  const { id } = jwtHelpers.verifyToken(
+    token,
+    config.jwt.access_secret as Secret
+  );
 
   const result = await UserServices.getUserInfo(id);
 
@@ -23,8 +26,10 @@ const getUserInfo = catchAsync(async (req: Request, res: Response) => {
 
 const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization as string;
-  const { id } = jwtHelpers.verifyToken(token, config.jwt.jwt_secret as Secret);
-
+  const { id } = jwtHelpers.verifyToken(
+    token,
+    config.jwt.access_secret as Secret
+  );
   const result = await UserServices.updateUserInfo(id, req.body);
 
   sendResponse(res, {

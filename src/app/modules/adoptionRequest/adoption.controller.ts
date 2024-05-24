@@ -16,7 +16,7 @@ const createAdoptionRequest = catchAsync(
     }
     const { id } = jwtHelpers.verifyToken(
       token,
-      config.jwt.jwt_secret as Secret
+      config.jwt.access_secret as Secret
     );
 
     const result = await AdoptionServices.createAdoptionIntoDb(id, req.body);
@@ -35,7 +35,10 @@ const getAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
   if (!token) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
   }
-  const { id } = jwtHelpers.verifyToken(token, config.jwt.jwt_secret as Secret);
+  const { id } = jwtHelpers.verifyToken(
+    token,
+    config.jwt.access_secret as Secret
+  );
 
   const result = await AdoptionServices.getAdoptionRequest(id);
 
@@ -55,7 +58,7 @@ const updateAdoptionRequestStatus = catchAsync(
     }
     const { id } = jwtHelpers.verifyToken(
       token,
-      config.jwt.jwt_secret as Secret
+      config.jwt.access_secret as Secret
     );
     const { requestId } = req.params;
 

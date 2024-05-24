@@ -15,7 +15,10 @@ const createAPet = catchAsync(async (req: Request, res: Response) => {
   if (!token) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
   }
-  const { id } = jwtHelpers.verifyToken(token, config.jwt.jwt_secret as Secret);
+  const { id } = jwtHelpers.verifyToken(
+    token,
+    config.jwt.access_secret as Secret
+  );
 
   const result = await PetServices.createAPet(req.body);
 
@@ -40,13 +43,27 @@ const getFilteredPet = catchAsync(async (req: Request, res: Response) => {
     data: result.data,
   });
 });
+const getAPet = catchAsync(async (req: Request, res: Response) => {
+  const { petId } = req.params;
+  const result = await PetServices.getAPet(petId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Pet retrieved successfully",
+    data: result,
+  });
+});
 
 const updateAPet = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization as string;
   if (!token) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
   }
-  const { id } = jwtHelpers.verifyToken(token, config.jwt.jwt_secret as Secret);
+  const { id } = jwtHelpers.verifyToken(
+    token,
+    config.jwt.access_secret as Secret
+  );
   const { petId } = req.params;
 
   const result = await PetServices.updateAPet(petId, req.body);
@@ -62,5 +79,6 @@ const updateAPet = catchAsync(async (req: Request, res: Response) => {
 export const PetControllers = {
   createAPet,
   getFilteredPet,
+  getAPet,
   updateAPet,
 };
