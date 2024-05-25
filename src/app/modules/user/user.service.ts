@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { User, UserRole } from "@prisma/client";
 import prisma from "../../shared/prisma";
 
 const getUserInfo = async (userId: string): Promise<Partial<User>> => {
@@ -50,7 +50,25 @@ const updateUserInfo = async (
   return result;
 };
 
+const getMyProfile = async (authUser: any) => {
+  const result = await prisma.user.findFirst({
+    where: {
+      id: authUser.userId,
+      role: authUser.role,
+    },
+    select: {
+      name: true,
+      email: true,
+      role: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+  return result;
+};
+
 export const UserServices = {
   getUserInfo,
   updateUserInfo,
+  getMyProfile,
 };

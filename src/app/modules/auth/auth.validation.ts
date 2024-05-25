@@ -18,3 +18,20 @@ export const createUserValidationSchema = z.object({
   email: z.string().email(),
   password: z.string(),
 });
+
+export const changePasswordZodSchema = z.object({
+  oldPassword: z.string({
+    required_error: "Old password  is required",
+  }),
+  newPassword: z.string({
+    required_error: "New password  is required",
+  }),
+});
+
+export const refreshTokenZodSchema = z.object({
+  cookies: z.object({
+    refreshToken: z.string({
+      required_error: "Refresh Token is required",
+    }),
+  }),
+});
