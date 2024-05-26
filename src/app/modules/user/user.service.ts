@@ -121,51 +121,53 @@ const getAllUsers = async (params: any, options: IPaginationOptions) => {
   };
 };
 
-const getAPet = async (petId: string) => {
-  const result = await prisma.pet.findUniqueOrThrow({
+const changeStatus = async (userId: string, data: Partial<User>) => {
+  await prisma.user.findUniqueOrThrow({
     where: {
-      id: petId,
+      id: userId,
     },
   });
-
-  return result;
-};
-
-const changeStatus = async (payload: { id: string; status: string }) => {
-  const isUserExist = await prisma.user.findUnique({
-    where: {
-      id: payload.id,
-    },
-  });
-  if (!isUserExist) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "User does not exists!");
-  }
 
   const updatedStatus = await prisma.user.update({
     where: {
-      id: payload.id,
+      id: userId,
     },
-    data: payload.status,
+    data,
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 
   return updatedStatus;
 };
 
-const changeRole = async (payload: { id: string; role: string }) => {
-  const isUserExist = await prisma.user.findUnique({
+const changeRole = async (userId: string, data: Partial<User>) => {
+  await prisma.user.findUniqueOrThrow({
     where: {
-      id: payload.id,
+      id: userId,
     },
   });
-  if (!isUserExist) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "User does not exists!");
-  }
 
   const updatedRole = await prisma.user.update({
     where: {
-      id: payload.id,
+      id: userId,
     },
-    data: payload.role,
+    data,
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 
   return updatedRole;

@@ -12,6 +12,11 @@ import { UserRole } from "@prisma/client";
 const router = express.Router();
 
 router.get(
+  "/",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  UserControllers.getAllUsers
+);
+router.get(
   "/profile",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.USER),
   UserControllers.getUserInfo
@@ -24,21 +29,15 @@ router.put(
   UserControllers.updateUserInfo
 );
 
-router.get(
-  "/",
-  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
-  UserControllers.getAllUsers
-);
-
 router.patch(
-  "/change-status",
+  "/change-status/:id",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
   validateRequest(changeUserStatus),
   UserControllers.changeStatus
 );
 
-router.get(
-  "/edit-role",
+router.patch(
+  "/edit-role/:id",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
   validateRequest(changeUserRole),
   UserControllers.changeRole

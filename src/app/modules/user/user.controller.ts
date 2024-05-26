@@ -56,7 +56,8 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 });
 
 const changeStatus = catchAsync(async (req: Request, res: Response) => {
-  const result = await UserServices.changeStatus(req.body);
+  const { id: userId } = req.params;
+  const result = await UserServices.changeStatus(userId, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -67,7 +68,8 @@ const changeStatus = catchAsync(async (req: Request, res: Response) => {
 });
 
 const changeRole = catchAsync(async (req: Request, res: Response) => {
-  const result = await UserServices.changeStatus(req.body);
+  const { id: userId } = req.params;
+  const result = await UserServices.changeStatus(userId, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
