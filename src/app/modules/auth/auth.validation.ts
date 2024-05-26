@@ -29,9 +29,7 @@ export const changePasswordZodSchema = z.object({
 });
 
 export const refreshTokenZodSchema = z.object({
-  cookies: z.object({
-    refreshToken: z.string({
-      required_error: "Refresh Token is required",
-    }),
+  refreshToken: z.string({
+    required_error: "Refresh Token is required",
   }),
 });

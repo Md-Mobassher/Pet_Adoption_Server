@@ -13,6 +13,7 @@ model User {
   email           String            @unique
   password        String
   role            UserRole          @default(USER)
+  status          UserStatus        @default(ACTIVE)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   AdoptionRequest AdoptionRequest[]
@@ -59,6 +60,12 @@ enum UserRole {
   ADMIN
   USER
   SUPER_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  DEACTIVE
+  DELETED
 }
 
 enum adoptionStatus {

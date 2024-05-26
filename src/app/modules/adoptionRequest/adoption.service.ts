@@ -44,6 +44,9 @@ const getAdoptionRequest = async (
     where: {
       userId: userId,
     },
+    include: {
+      pet: true,
+    },
   });
 
   return result;

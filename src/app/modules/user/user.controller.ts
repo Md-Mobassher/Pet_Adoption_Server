@@ -6,6 +6,8 @@ import { UserServices } from "./user.service";
 import { jwtHelpers } from "../../helper/jwtHelpers";
 import { Secret } from "jsonwebtoken";
 import config from "../../config";
+import pick from "../../shared/pick";
+import { userFilterableFields } from "./user.constant";
 
 const getUserInfo = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization as string;
@@ -40,15 +42,37 @@ const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getMyProfile = catchAsync(async (req: Request, res: Response) => {
-  const user = req.user;
-
-  const result = await UserServices.getMyProfile(user);
+const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, userFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await UserServices.getAllUsers(filters, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Profile data fetched!",
+    message: "All User retrieved successfully!",
+    data: result,
+  });
+});
+
+const changeStatus = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserServices.changeStatus(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User status changed!",
+    data: result,
+  });
+});
+
+const changeRole = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserServices.changeStatus(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User Role changed!",
     data: result,
   });
 });
@@ -56,5 +80,7 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
 export const UserControllers = {
   getUserInfo,
   updateUserInfo,
-  getMyProfile,
+  getAllUsers,
+  changeStatus,
+  changeRole,
 };
