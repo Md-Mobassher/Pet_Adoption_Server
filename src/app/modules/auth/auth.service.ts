@@ -6,7 +6,7 @@ import config from "../../config";
 import { JwtPayload, Secret } from "jsonwebtoken";
 import ApiError from "../../errors/ApiError";
 import { Request } from "express";
-import { User } from "@prisma/client";
+import { User, UserStatus } from "@prisma/client";
 import { IChangePassword, IRefreshTokenResponse } from "./auth.interface";
 import { AuthUtils } from "./auth.utils";
 import { hashedPassword } from "../../helper/hashPasswordHelper";
@@ -15,6 +15,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
   const userData = await prisma.user.findUniqueOrThrow({
     where: {
       email: payload.email,
+      status: UserStatus.ACTIVE,
     },
   });
 

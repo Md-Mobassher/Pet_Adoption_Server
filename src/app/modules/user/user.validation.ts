@@ -6,9 +6,6 @@ export const updateUserValidationSchema = z.object({
 });
 
 export const changeUserStatus = z.object({
-  status: z.enum(["DEACTIVE", "ACTIVE", "DELETED"]),
-});
-
-export const changeUserRole = z.object({
   role: z.enum(["ADMIN", "USER"]),
+  status: z.enum(["DEACTIVE", "ACTIVE", "DELETED"]),
 });

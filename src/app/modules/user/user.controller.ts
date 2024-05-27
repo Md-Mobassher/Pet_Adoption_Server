@@ -62,19 +62,7 @@ const changeStatus = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User status changed!",
-    data: result,
-  });
-});
-
-const changeRole = catchAsync(async (req: Request, res: Response) => {
-  const { id: userId } = req.params;
-  const result = await UserServices.changeStatus(userId, req.body);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "User Role changed!",
+    message: "User status updated!",
     data: result,
   });
 });
@@ -84,5 +72,4 @@ export const UserControllers = {
   updateUserInfo,
   getAllUsers,
   changeStatus,
-  changeRole,
 };

@@ -67,9 +67,31 @@ const updateAPet = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteAPet = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization as string;
+  if (!token) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
+  }
+  const { id } = jwtHelpers.verifyToken(
+    token,
+    config.jwt.access_secret as Secret
+  );
+  const { petId } = req.params;
+
+  const result = await PetServices.deleteAPet(petId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Pet profile updated successfully",
+    data: result,
+  });
+});
+
 export const PetControllers = {
   createAPet,
   getFilteredPet,
   getAPet,
   updateAPet,
+  deleteAPet,
 };

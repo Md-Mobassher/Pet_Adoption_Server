@@ -80,6 +80,7 @@ const getAPet = async (petId: string) => {
   const result = await prisma.pet.findUniqueOrThrow({
     where: {
       id: petId,
+      isDeleted: false,
     },
   });
 
@@ -103,9 +104,29 @@ const updateAPet = async (petId: string, data: Partial<Pet>): Promise<Pet> => {
   return result;
 };
 
+const deleteAPet = async (petId: string): Promise<Pet> => {
+  await prisma.pet.findFirstOrThrow({
+    where: {
+      id: petId,
+    },
+  });
+
+  const result = await prisma.pet.update({
+    where: {
+      id: petId,
+    },
+    data: {
+      isDeleted: true,
+    },
+  });
+
+  return result;
+};
+
 export const PetServices = {
   createAPet,
   getFilteredPet,
   getAPet,
   updateAPet,
+  deleteAPet,
 };

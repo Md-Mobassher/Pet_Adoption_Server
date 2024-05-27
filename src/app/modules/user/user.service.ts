@@ -1,7 +1,5 @@
-import { Prisma, User, UserRole } from "@prisma/client";
+import { Prisma, User, UserRole, UserStatus } from "@prisma/client";
 import prisma from "../../shared/prisma";
-import ApiError from "../../errors/ApiError";
-import httpStatus from "http-status";
 import { IPaginationOptions } from "../../interface/iPaginationOptions";
 import { paginationHelper } from "../../helper/paginationHelper";
 import { userSearchAbleFields } from "./user.constant";
@@ -10,6 +8,7 @@ const getUserInfo = async (userId: string): Promise<Partial<User>> => {
   const result = await prisma.user.findUniqueOrThrow({
     where: {
       id: userId,
+      status: UserStatus.ACTIVE,
     },
     select: {
       id: true,
@@ -31,6 +30,7 @@ const updateUserInfo = async (
   const user = await prisma.user.findUniqueOrThrow({
     where: {
       id: userId,
+      status: UserStatus.ACTIVE,
     },
   });
 
@@ -45,8 +45,10 @@ const updateUserInfo = async (
     },
     select: {
       id: true,
-      name: true,
       email: true,
+      name: true,
+      role: true,
+      status: true,
       createdAt: true,
       updatedAt: true,
     },
@@ -132,7 +134,10 @@ const changeStatus = async (userId: string, data: Partial<User>) => {
     where: {
       id: userId,
     },
-    data,
+    data: {
+      role: data.role,
+      status: data.status,
+    },
     select: {
       id: true,
       email: true,
@@ -147,36 +152,9 @@ const changeStatus = async (userId: string, data: Partial<User>) => {
   return updatedStatus;
 };
 
-const changeRole = async (userId: string, data: Partial<User>) => {
-  await prisma.user.findUniqueOrThrow({
-    where: {
-      id: userId,
-    },
-  });
-
-  const updatedRole = await prisma.user.update({
-    where: {
-      id: userId,
-    },
-    data,
-    select: {
-      id: true,
-      email: true,
-      name: true,
-      role: true,
-      status: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-  });
-
-  return updatedRole;
-};
-
 export const UserServices = {
   getUserInfo,
   updateUserInfo,
   getAllUsers,
   changeStatus,
-  changeRole,
 };

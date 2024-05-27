@@ -1,7 +1,6 @@
 import express from "express";
 import { UserControllers } from "./user.controller";
 import {
-  changeUserRole,
   changeUserStatus,
   updateUserValidationSchema,
 } from "./user.validation";
@@ -30,17 +29,10 @@ router.put(
 );
 
 router.patch(
-  "/change-status/:id",
+  "/update-status/:id",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
   validateRequest(changeUserStatus),
   UserControllers.changeStatus
-);
-
-router.patch(
-  "/edit-role/:id",
-  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
-  validateRequest(changeUserRole),
-  UserControllers.changeRole
 );
 
 export const UserRoutes = router;

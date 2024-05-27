@@ -38,4 +38,10 @@ router.put(
   PetControllers.updateAPet
 );
 
+router.delete(
+  "/:petId",
+  auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+  PetControllers.deleteAPet
+);
+
 export const PetRoutes = router;
