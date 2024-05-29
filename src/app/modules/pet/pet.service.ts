@@ -24,6 +24,9 @@ const getFilteredPet = async (params: any, options: IPaginationOptions) => {
   const { searchTerm, ...filterData } = params;
 
   const andCondions: Prisma.PetWhereInput[] = [];
+  andCondions.push({
+    isDeleted: false,
+  });
 
   if (params.searchTerm) {
     andCondions.push({
@@ -108,6 +111,7 @@ const deleteAPet = async (petId: string): Promise<Pet> => {
   await prisma.pet.findFirstOrThrow({
     where: {
       id: petId,
+      isDeleted: false,
     },
   });
 

@@ -14,12 +14,8 @@ const router = express.Router();
 router.post(
   "/create",
   auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
-
-  FileUploadHelper.upload.single("file"),
-  (req: Request, res: Response, next: NextFunction) => {
-    req.body = createPetValidationSchema.parse(JSON.parse(req.body.data));
-    return PetControllers.createAPet(req, res, next);
-  }
+  validateRequest(createPetValidationSchema),
+  PetControllers.createAPet
 );
 
 router.get("/", PetControllers.getFilteredPet);

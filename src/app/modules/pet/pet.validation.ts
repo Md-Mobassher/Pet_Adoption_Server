@@ -8,9 +8,10 @@ export const createPetValidationSchema = z.object({
   size: z.string(),
   location: z.string(),
   description: z.string(),
-  temperament: z.string(),
-  medicalHistory: z.string(),
-  adoptionRequirements: z.string(),
+  medicalHistory: z.array(z.string()),
+  temperament: z.array(z.string()),
+  adoptionRequirements: z.array(z.string()),
+  image: z.string().url(),
 });
 
 export const updatePetValidationSchema = z.object({

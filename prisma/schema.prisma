@@ -31,9 +31,9 @@ model Pet {
   size                 String
   location             String
   description          String
-  temperament          String
-  medicalHistory       String
-  adoptionRequirements String
+  temperament          String[]
+  medicalHistory       String[]
+  adoptionRequirements String[]
   isDeleted            Boolean           @default(false)
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
