@@ -20,6 +20,10 @@ const createAPet = async (req: Record<string, any>): Promise<Pet> => {
 };
 
 const getFilteredPet = async (params: any, options: IPaginationOptions) => {
+  if (params?.age) {
+    params.age = Number(params.age);
+  }
+  // console.log(params);
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 

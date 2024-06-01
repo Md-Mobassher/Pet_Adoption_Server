@@ -7,7 +7,6 @@ import {
 } from "./pet.validation";
 import auth from "../../middleware/auth";
 import { UserRole } from "@prisma/client";
-import { FileUploadHelper } from "../../helper/fileUploadHelper";
 
 const router = express.Router();
 
@@ -27,7 +26,7 @@ router.get(
   PetControllers.getAPet
 );
 
-router.put(
+router.patch(
   "/:petId",
   auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
   validateRequest(updatePetValidationSchema),

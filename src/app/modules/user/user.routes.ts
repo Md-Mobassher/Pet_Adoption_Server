@@ -21,7 +21,7 @@ router.get(
   UserControllers.getUserInfo
 );
 
-router.put(
+router.patch(
   "/update-profile",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.USER),
   validateRequest(updateUserValidationSchema),

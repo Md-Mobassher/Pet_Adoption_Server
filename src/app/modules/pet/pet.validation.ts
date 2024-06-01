@@ -22,7 +22,7 @@ export const updatePetValidationSchema = z.object({
   size: z.string().optional(),
   location: z.string().optional(),
   description: z.string().optional(),
-  temperament: z.string().optional(),
-  medicalHistory: z.string().optional(),
-  adoptionRequirements: z.string().optional(),
+  medicalHistory: z.array(z.string()).optional(),
+  temperament: z.array(z.string()).optional(),
+  adoptionRequirements: z.array(z.string()).optional(),
 });
