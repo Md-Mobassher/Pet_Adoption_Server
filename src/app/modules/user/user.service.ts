@@ -151,10 +151,38 @@ const changeStatus = async (userId: string, data: Partial<User>) => {
 
   return updatedStatus;
 };
+const deleteUser = async (userId: string) => {
+  await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+  });
+
+  const deleteUser = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      status: UserStatus.DELETED,
+    },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  return deleteUser;
+};
 
 export const UserServices = {
   getUserInfo,
   updateUserInfo,
   getAllUsers,
   changeStatus,
+  deleteUser,
 };

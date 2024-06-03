@@ -29,6 +29,7 @@ model Pet {
   age                  Int
   image                String
   size                 String
+  gender               PetGender         @default(MALE)
   location             String
   description          String
   temperament          String[]
@@ -67,6 +68,11 @@ enum UserStatus {
   ACTIVE
   DEACTIVE
   DELETED
+}
+
+enum PetGender {
+  MALE
+  FEMALE
 }
 
 enum adoptionStatus {

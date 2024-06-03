@@ -66,10 +66,22 @@ const changeStatus = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const deleteUser = catchAsync(async (req: Request, res: Response) => {
+  const { id: userId } = req.params;
+  const result = await UserServices.deleteUser(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User deleted successfully!",
+    data: result,
+  });
+});
 
 export const UserControllers = {
   getUserInfo,
   updateUserInfo,
   getAllUsers,
   changeStatus,
+  deleteUser,
 };
