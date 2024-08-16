@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import { PetControllers } from "./pets.controller";
 import validateRequest from "../../middleware/validateRequest";
 import {
@@ -24,6 +24,11 @@ router.get(
   auth(UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.USER),
 
   PetControllers.getAPet
+);
+router.get(
+  "/analytics",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  PetControllers.analytics
 );
 
 router.patch(

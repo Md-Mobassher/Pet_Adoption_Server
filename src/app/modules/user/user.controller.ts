@@ -77,6 +77,16 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const analytics = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserServices.analytics();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User analytics retrived successfully!",
+    data: result,
+  });
+});
 
 export const UserControllers = {
   getUserInfo,
@@ -84,4 +94,5 @@ export const UserControllers = {
   getAllUsers,
   changeStatus,
   deleteUser,
+  analytics,
 };

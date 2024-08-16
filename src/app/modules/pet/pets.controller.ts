@@ -90,10 +90,22 @@ const deleteAPet = catchAsync(async (req: Request, res: Response) => {
   }
 });
 
+const analytics = catchAsync(async (req: Request, res: Response) => {
+  const result = await PetServices.analytics();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Pets analytics retrived successfully!",
+    data: result,
+  });
+});
+
 export const PetControllers = {
   createAPet,
   getFilteredPet,
   getAPet,
   updateAPet,
   deleteAPet,
+  analytics,
 };

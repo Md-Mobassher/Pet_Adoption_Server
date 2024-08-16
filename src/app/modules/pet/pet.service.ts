@@ -131,10 +131,50 @@ const deleteAPet = async (petId: string): Promise<Pet> => {
   return result;
 };
 
+const analytics = async () => {
+  // Total pet count
+  const allPets = await prisma.pet.count({});
+
+  // Count by species
+  const dogs = await prisma.pet.count({ where: { species: "Dog" } });
+  const cats = await prisma.pet.count({ where: { species: "Cat" } });
+  const rabbits = await prisma.pet.count({ where: { species: "Rabbit" } }); // Ensure spelling matches data
+  const birds = await prisma.pet.count({ where: { species: "Bird" } });
+  const fishes = await prisma.pet.count({ where: { species: "Fish" } });
+
+  // Count by gender
+  const totalMale = await prisma.pet.count({ where: { gender: "MALE" } });
+  const totalFemale = await prisma.pet.count({ where: { gender: "FEMALE" } });
+
+  // Count by size
+  // const totalSmall = await prisma.pet.count({ where: { size: "Small" } });
+  // const totalMedium = await prisma.pet.count({ where: { size: "Medium" } });
+  // const totalLarge = await prisma.pet.count({ where: { size: "Large" } });
+  // const totalExtraLarge = await prisma.pet.count({
+  //   where: { size: "Extra Large" },
+  // });
+
+  return {
+    allPets,
+    dogs,
+    cats,
+    rabbits,
+    birds,
+    fishes,
+    totalMale,
+    totalFemale,
+    // totalSmall,
+    // totalMedium,
+    // totalLarge,
+    // totalExtraLarge,
+  };
+};
+
 export const PetServices = {
   createAPet,
   getFilteredPet,
   getAPet,
   updateAPet,
   deleteAPet,
+  analytics,
 };

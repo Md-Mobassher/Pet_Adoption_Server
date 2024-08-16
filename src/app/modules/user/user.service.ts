@@ -179,10 +179,54 @@ const deleteUser = async (userId: string) => {
   return deleteUser;
 };
 
+const analytics = async () => {
+  const allUsers = await prisma.user.count({});
+  const totalAdmins = await prisma.user.count({
+    where: {
+      role: "ADMIN",
+    },
+  });
+
+  const totalUsers = await prisma.user.count({
+    where: {
+      role: "USER",
+    },
+  });
+
+  // Count users by statuses
+  const totalActiveUsers = await prisma.user.count({
+    where: {
+      status: "ACTIVE",
+    },
+  });
+
+  const totalDeletedUsers = await prisma.user.count({
+    where: {
+      status: "DELETED",
+    },
+  });
+
+  const totalDeactiveUsers = await prisma.user.count({
+    where: {
+      status: "DEACTIVE",
+    },
+  });
+
+  return {
+    allUsers,
+    totalAdmins,
+    totalUsers,
+    totalActiveUsers,
+    totalDeletedUsers,
+    totalDeactiveUsers,
+  };
+};
+
 export const UserServices = {
   getUserInfo,
   updateUserInfo,
   getAllUsers,
   changeStatus,
   deleteUser,
+  analytics,
 };

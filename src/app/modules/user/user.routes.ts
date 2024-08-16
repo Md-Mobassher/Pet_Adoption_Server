@@ -20,6 +20,11 @@ router.get(
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.USER),
   UserControllers.getUserInfo
 );
+router.get(
+  "/analytics",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  UserControllers.analytics
+);
 
 router.patch(
   "/update-profile",
