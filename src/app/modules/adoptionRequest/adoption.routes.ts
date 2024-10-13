@@ -17,15 +17,17 @@ router.post(
   AdoptionControllers.createAdoptionRequest
 );
 
+router.get("/", auth(UserRole.USER), AdoptionControllers.getMyAdoptionRequest);
+
 router.get(
-  "/",
-  auth(UserRole.USER, UserRole.ADMIN, UserRole.SUPER_ADMIN),
-  AdoptionControllers.getAdoptionRequest
+  "/all-request",
+  auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+  AdoptionControllers.getAllAdoptionRequest
 );
 
-router.put(
+router.patch(
   "/:requestId",
-  auth(UserRole.USER, UserRole.ADMIN, UserRole.SUPER_ADMIN),
+  auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
   validateRequest(updateAdoptionRequestValidationSchema),
   AdoptionControllers.updateAdoptionRequestStatus
 );

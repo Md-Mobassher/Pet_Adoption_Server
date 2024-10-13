@@ -27,13 +27,13 @@ const getFilteredPet = async (params: any, options: IPaginationOptions) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
-  const andCondions: Prisma.PetWhereInput[] = [];
-  andCondions.push({
+  const andConditions: Prisma.PetWhereInput[] = [];
+  andConditions.push({
     isDeleted: false,
   });
 
   if (params.searchTerm) {
-    andCondions.push({
+    andConditions.push({
       OR: petSearchAbleFields.map((field) => ({
         [field]: {
           contains: params.searchTerm,
@@ -44,7 +44,7 @@ const getFilteredPet = async (params: any, options: IPaginationOptions) => {
   }
 
   if (Object.keys(filterData).length > 0) {
-    andCondions.push({
+    andConditions.push({
       AND: Object.keys(filterData).map((key) => ({
         [key]: {
           equals: (filterData as any)[key],
@@ -53,7 +53,17 @@ const getFilteredPet = async (params: any, options: IPaginationOptions) => {
     });
   }
 
-  const whereConditons: Prisma.PetWhereInput = { AND: andCondions };
+  andConditions.push({
+    AdoptionRequest: {
+      none: {
+        status: {
+          in: ["PENDING", "APPROVED"],
+        },
+      },
+    },
+  });
+
+  const whereConditons: Prisma.PetWhereInput = { AND: andConditions };
 
   const result = await prisma.pet.findMany({
     where: whereConditons,

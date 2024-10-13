@@ -30,7 +30,7 @@ const createAdoptionRequest = catchAsync(
   }
 );
 
-const getAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
+const getMyAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization as string;
   if (!token) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
@@ -40,15 +40,37 @@ const getAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
     config.jwt.access_secret as Secret
   );
 
-  const result = await AdoptionServices.getAdoptionRequest(id);
+  const result = await AdoptionServices.getMyAdoptionRequest(id);
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Adoption requests retrieved successfully",
+    message: "My Adoption requests retrieved successfully",
     data: result,
   });
 });
+
+const getAllAdoptionRequest = catchAsync(
+  async (req: Request, res: Response) => {
+    const token = req.headers.authorization as string;
+    if (!token) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
+    }
+    const { id } = jwtHelpers.verifyToken(
+      token,
+      config.jwt.access_secret as Secret
+    );
+
+    const result = await AdoptionServices.getAllAdoptionRequest(id);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "All Adoption requests retrieved successfully",
+      data: result,
+    });
+  }
+);
 
 const updateAdoptionRequestStatus = catchAsync(
   async (req: Request, res: Response) => {
@@ -71,7 +93,7 @@ const updateAdoptionRequestStatus = catchAsync(
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "Adoption request updated successfully",
+      message: "Adoption request status updated successfully",
       data: result,
     });
   }
@@ -79,6 +101,7 @@ const updateAdoptionRequestStatus = catchAsync(
 
 export const AdoptionControllers = {
   createAdoptionRequest,
-  getAdoptionRequest,
+  getMyAdoptionRequest,
+  getAllAdoptionRequest,
   updateAdoptionRequestStatus,
 };

@@ -21,7 +21,6 @@ router.get("/", PetControllers.getFilteredPet);
 
 router.get(
   "/:petId",
-  auth(UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.USER),
 
   PetControllers.getAPet
 );
