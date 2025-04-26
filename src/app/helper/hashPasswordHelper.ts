@@ -1,4 +1,4 @@
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 
 export const hashedPassword = async (password: string): Promise<string> => {
   const saltRounds: number = 10;

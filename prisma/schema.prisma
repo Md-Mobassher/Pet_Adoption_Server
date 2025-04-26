@@ -3,17 +3,23 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id              String            @id @default(uuid())
-  name            String
-  email           String            @unique
-  password        String
-  role            UserRole          @default(USER)
-  status          UserStatus        @default(ACTIVE)
+  id               String     @id @default(uuid()) @map("_id")
+  name             String
+  email            String     @unique
+  password         String
+  role             UserRole   @default(USER)
+  status           UserStatus @default(ACTIVE)
+  image            String?
+  phone            String?
+  presentAddress   String?
+  permanentAddress String?
+  gender           Gender?
+
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   AdoptionRequest AdoptionRequest[]
@@ -22,7 +28,7 @@ model User {
 }
 
 model Pet {
-  id                   String            @id @default(uuid())
+  id                   String            @id @default(uuid()) @map("_id")
   name                 String
   species              String
   breed                String
@@ -44,7 +50,7 @@ model Pet {
 }
 
 model AdoptionRequest {
-  id                     String         @id @default(uuid())
+  id                     String         @id @default(uuid()) @map("_id")
   userId                 String
   petId                  String
   status                 adoptionStatus @default(PENDING)
@@ -68,6 +74,12 @@ enum UserStatus {
   ACTIVE
   DEACTIVE
   DELETED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHERS
 }
 
 enum PetGender {

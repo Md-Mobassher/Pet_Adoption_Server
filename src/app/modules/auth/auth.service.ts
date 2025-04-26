@@ -1,4 +1,4 @@
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import prisma from "../../shared/prisma";
 import httpStatus from "http-status";
 import { jwtHelpers } from "../../helper/jwtHelpers";

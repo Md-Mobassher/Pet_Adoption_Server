@@ -1,18 +1,10 @@
-import { Pet, Prisma, UserRole } from "@prisma/client";
+import { Pet, Prisma } from "@prisma/client";
 import prisma from "../../shared/prisma";
 import { paginationHelper } from "../../helper/paginationHelper";
 import { petSearchAbleFields } from "./pet.constant";
 import { IPaginationOptions } from "../../interface/iPaginationOptions";
-import { IUploadFile } from "../../interface/file";
-import { FileUploadHelper } from "../../helper/fileUploadHelper";
 
 const createAPet = async (req: Record<string, any>): Promise<Pet> => {
-  const file = req.file as IUploadFile;
-
-  if (file) {
-    const uploadPet = await FileUploadHelper.uploadToCloudinary(file);
-    req.body.image = uploadPet?.secure_url;
-  }
   const result = await prisma.pet.create({
     data: req.body,
   });
