@@ -26,7 +26,7 @@ router.get(
 );
 
 router.patch(
-  "/:requestId",
+  "/:id",
   auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
   validateRequest(updateAdoptionRequestValidationSchema),
   AdoptionControllers.updateAdoptionRequestStatus

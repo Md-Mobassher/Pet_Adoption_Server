@@ -10,7 +10,7 @@ datasource db {
 model User {
   id               String     @id @default(uuid()) @map("_id")
   name             String
-  email            String     @unique
+  email            String
   password         String
   role             UserRole   @default(USER)
   status           UserStatus @default(ACTIVE)
@@ -19,34 +19,20 @@ model User {
   presentAddress   String?
   permanentAddress String?
   gender           Gender?
+  bio              String?
+  isDeleted        Boolean    @default(false)
+  deletedAt        DateTime?
 
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   AdoptionRequest AdoptionRequest[]
+  Favorite        Favorite[]
+  Notification    Notification[]
+  Wishlist        Wishlist[]
 
+  @@index([email])
+  @@index([role, status])
   @@map("users")
-}
-
-model Pet {
-  id                   String            @id @default(uuid()) @map("_id")
-  name                 String
-  species              String
-  breed                String
-  age                  Int
-  image                String
-  size                 String
-  gender               PetGender         @default(MALE)
-  location             String
-  description          String
-  temperament          String[]
-  medicalHistory       String[]
-  adoptionRequirements String[]
-  isDeleted            Boolean           @default(false)
-  createdAt            DateTime          @default(now())
-  updatedAt            DateTime          @updatedAt
-  AdoptionRequest      AdoptionRequest[]
-
-  @@map("pets")
 }
 
 model AdoptionRequest {
@@ -55,6 +41,7 @@ model AdoptionRequest {
   petId                  String
   status                 adoptionStatus @default(PENDING)
   petOwnershipExperience String
+  adoptionDate           DateTime? // New
   createdAt              DateTime       @default(now())
   updatedAt              DateTime       @updatedAt
 
@@ -62,6 +49,110 @@ model AdoptionRequest {
   pet  Pet  @relation(fields: [petId], references: [id])
 
   @@map("adoptionRequests")
+}
+
+model Favorite {
+  id     String @id @default(uuid()) @map("_id")
+  userId String
+  petId  String
+
+  user User @relation(fields: [userId], references: [id])
+  pet  Pet  @relation(fields: [petId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, petId])
+  @@map("favorites")
+}
+
+model Pet {
+  id                   String                @id @default(uuid()) @map("_id")
+  name                 String
+  species              String
+  breed                String
+  age                  Int
+  image                String
+  size                 String
+  gender               PetGender             @default(MALE)
+  location             String
+  description          String
+  temperament          String[]
+  medicalHistory       String[]
+  adoptionRequirements String[]
+  isDeleted            Boolean               @default(false)
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  availabilityStatus   PetAvailabilityStatus @default(AVAILABLE)
+
+  AdoptionRequest AdoptionRequest[]
+  Favorite        Favorite[]
+  Wishlist        Wishlist[]
+  PetImage        PetImage[]
+  PetHealthRecord PetHealthRecord[]
+
+  @@map("pets")
+}
+
+model PetImage {
+  id       String @id @default(uuid()) @map("_id")
+  petId    String
+  imageUrl String
+
+  pet Pet @relation(fields: [petId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@map("petImages")
+}
+
+model Notification {
+  id          String   @id @default(uuid()) @map("_id")
+  userId      String
+  title       String
+  description String
+  isGlobal    Boolean  @default(false)
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid()) @map("_id")
+  action    String
+  userId    String?
+  userEmail String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Wishlist {
+  id     String @id @default(uuid()) @map("_id")
+  userId String
+  petId  String
+
+  user User @relation(fields: [userId], references: [id])
+  pet  Pet  @relation(fields: [petId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, petId])
+  @@map("wishlists")
+}
+
+model PetHealthRecord {
+  id          String   @id @default(uuid()) @map("_id")
+  petId       String
+  recordType  String // "Vaccination", "Surgery", etc
+  description String
+  date        DateTime
+
+  pet Pet @relation(fields: [petId], references: [id])
+
+  @@map("petHealthRecords")
 }
 
 enum UserRole {
@@ -91,4 +182,10 @@ enum adoptionStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum PetAvailabilityStatus {
+  AVAILABLE
+  RESERVED
+  ADOPTED
 }

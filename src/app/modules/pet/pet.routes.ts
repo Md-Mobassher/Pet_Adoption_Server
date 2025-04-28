@@ -11,7 +11,7 @@ import { UserRole } from "@prisma/client";
 const router = express.Router();
 
 router.post(
-  "/create",
+  "/",
   auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
   validateRequest(createPetValidationSchema),
   PetControllers.createAPet

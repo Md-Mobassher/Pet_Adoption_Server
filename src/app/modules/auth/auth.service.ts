@@ -12,7 +12,7 @@ import { AuthUtils } from "./auth.utils";
 import { hashedPassword } from "../../helper/hashPasswordHelper";
 
 const loginUser = async (payload: { email: string; password: string }) => {
-  const userData = await prisma.user.findUniqueOrThrow({
+  const userData = await prisma.user.findFirstOrThrow({
     where: {
       email: payload.email,
       status: UserStatus.ACTIVE,

@@ -82,7 +82,7 @@ const updateAdoptionRequestStatus = catchAsync(
       token,
       config.jwt.access_secret as Secret
     );
-    const { requestId } = req.params;
+    const { id: requestId } = req.params;
 
     const result = await AdoptionServices.updateAdoptionRequestStatus(
       id,
