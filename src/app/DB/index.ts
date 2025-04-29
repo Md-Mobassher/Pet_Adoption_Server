@@ -23,7 +23,7 @@ const seedSuperAdmin = async () => {
 
     // Check if a super admin already exists
     const isSuperAdminExists = await prisma.user.findUnique({
-      where: { email: config.super_admin.email },
+      where: { email: config.super_admin.email as string } as any,
     });
 
     if (!isSuperAdminExists) {

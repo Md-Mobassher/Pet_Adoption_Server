@@ -15,7 +15,7 @@ const createFavourite = catchAsync(async (req: Request, res: Response) => {
   }
   const { id } = jwtHelpers.verifyToken(
     token,
-    config.jwt.access_secret as Secret
+    config.jwt.access_secret as string
   );
 
   const result = await FavouriteServices.createAdoptionIntoDb(id, req.body);
@@ -35,7 +35,7 @@ const getMyFavourite = catchAsync(async (req: Request, res: Response) => {
   }
   const { id } = jwtHelpers.verifyToken(
     token,
-    config.jwt.access_secret as Secret
+    config.jwt.access_secret as string
   );
 
   const result = await FavouriteServices.getMyFavourite(id);
@@ -55,7 +55,7 @@ const getAllFavourite = catchAsync(async (req: Request, res: Response) => {
   }
   const { id } = jwtHelpers.verifyToken(
     token,
-    config.jwt.access_secret as Secret
+    config.jwt.access_secret as string
   );
 
   const result = await FavouriteServices.getAllFavourite(id);
@@ -76,7 +76,7 @@ const deleteFavouriteStatus = catchAsync(
     }
     const { id } = jwtHelpers.verifyToken(
       token,
-      config.jwt.access_secret as Secret
+      config.jwt.access_secret as string
     );
     const { id: requestId } = req.params;
 

@@ -13,7 +13,7 @@ const getUserInfo = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization as string;
   const { id } = jwtHelpers.verifyToken(
     token,
-    config.jwt.access_secret as Secret
+    config.jwt.access_secret as string
   );
 
   const result = await UserServices.getUserInfo(id);
@@ -30,7 +30,7 @@ const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization as string;
   const { id } = jwtHelpers.verifyToken(
     token,
-    config.jwt.access_secret as Secret
+    config.jwt.access_secret as string
   );
   const result = await UserServices.updateUserInfo(id, req.body);
 

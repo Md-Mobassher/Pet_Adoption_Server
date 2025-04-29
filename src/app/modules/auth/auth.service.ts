@@ -34,7 +34,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
       email: userData.email,
       role: userData.role,
     },
-    config.jwt.access_secret as Secret,
+    config.jwt.access_secret as string,
     config.jwt.access_expires_in as string
   );
 
@@ -44,7 +44,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
       email: userData.email,
       role: userData.role,
     },
-    config.jwt.refresh_secret as Secret,
+    config.jwt.refresh_secret as string,
     config.jwt.refresh_expires_in as string
   );
 
@@ -119,7 +119,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   try {
     verifiedToken = jwtHelpers.verifyToken(
       token,
-      config.jwt.refresh_secret as Secret
+      config.jwt.refresh_secret as string
     );
   } catch (err) {
     throw new ApiError(httpStatus.FORBIDDEN, "Invalid Refresh Token");
@@ -143,7 +143,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
       email: isUserExist.email,
       role: isUserExist.role,
     },
-    config.jwt.access_secret as Secret,
+    config.jwt.access_secret as string,
     config.jwt.access_expires_in as string
   );
 

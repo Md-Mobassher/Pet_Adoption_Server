@@ -53,7 +53,7 @@ const updateAPet = catchAsync(async (req: Request, res: Response) => {
   }
   const { id } = jwtHelpers.verifyToken(
     token,
-    config.jwt.access_secret as Secret
+    config.jwt.access_secret as string
   );
   const { petId } = req.params;
 
@@ -74,7 +74,7 @@ const deleteAPet = catchAsync(async (req: Request, res: Response) => {
   }
   const { id } = jwtHelpers.verifyToken(
     token,
-    config.jwt.access_secret as Secret
+    config.jwt.access_secret as string
   );
   const { petId } = req.params;
 

@@ -16,7 +16,7 @@ const createAdoptionRequest = catchAsync(
     }
     const { id } = jwtHelpers.verifyToken(
       token,
-      config.jwt.access_secret as Secret
+      config.jwt.access_secret as string
     );
 
     const result = await AdoptionServices.createAdoptionIntoDb(id, req.body);
@@ -37,9 +37,8 @@ const getMyAdoptionRequest = catchAsync(async (req: Request, res: Response) => {
   }
   const { id } = jwtHelpers.verifyToken(
     token,
-    config.jwt.access_secret as Secret
+    config.jwt.access_secret as string
   );
-
   const result = await AdoptionServices.getMyAdoptionRequest(id);
 
   sendResponse(res, {
@@ -58,7 +57,7 @@ const getAllAdoptionRequest = catchAsync(
     }
     const { id } = jwtHelpers.verifyToken(
       token,
-      config.jwt.access_secret as Secret
+      config.jwt.access_secret as string
     );
 
     const result = await AdoptionServices.getAllAdoptionRequest(id);
@@ -80,7 +79,7 @@ const updateAdoptionRequestStatus = catchAsync(
     }
     const { id } = jwtHelpers.verifyToken(
       token,
-      config.jwt.access_secret as Secret
+      config.jwt.access_secret as string
     );
     const { id: requestId } = req.params;
 
